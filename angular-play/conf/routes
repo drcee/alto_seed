@@ -15,7 +15,9 @@ GET        /assets/*file           controllers.Assets.at(path="/public", file)
 GET        /api/hello              controllers.HelloWorld.list
 GET        /api/hello/:code        controllers.HelloWorld.get(code)
 
-GET     /chatFeed/:room             controllers.PushController.chatFeed(room: String)
-POST    /chat                       controllers.PushController.postMessage
+GET     /api/priceFeed             controllers.PushController.priceFeed
+
+GET     /chatFeed/:room            controllers.PushController.chatFeed(room: String)
+POST    /chat                      controllers.PushController.postMessage
 
     

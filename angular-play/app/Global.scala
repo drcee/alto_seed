@@ -1,4 +1,5 @@
-import akka.ChatActors
+
+import akka.SubscriberActors
 import play.api.GlobalSettings
 
 /**
@@ -7,10 +8,10 @@ import play.api.GlobalSettings
 object Global extends GlobalSettings {
 
   override def onStart(application: play.api.Application) {
-    ChatActors
+    SubscriberActors
   }
 
   override def onStop(application: play.api.Application) {
-    ChatActors.system.shutdown()
+    SubscriberActors.system.shutdown()
   }
 }

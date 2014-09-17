@@ -35,4 +35,14 @@ object PushController extends Controller {
       &> EventSource()
     ).as("text/event-stream")
   }
+
+  def priceFeed = Action { req =>
+    println(req.remoteAddress + " - SSE connected")
+    Ok.feed(chatOut
+      &> Concurrent.buffer(50)
+      &> connDeathWatch(req.remoteAddress)
+      &> EventSource()
+    ).as("text/event-stream")
+
+  }
 }
