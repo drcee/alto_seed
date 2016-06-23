@@ -7,7 +7,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>ats-core</name>
+	<name>alto-currator-spike</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -49,7 +49,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.curator</groupId>
-            <artifactId>curator-recipes</artifactId>
+            <artifactId>curator-x-discovery</artifactId>
             <version>3.1.0</version>
         </dependency>
         <dependency>
@@ -129,11 +129,11 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<!-- <mainClass>com.alphatradingsignals.services.gridgain.QuoteFeed</mainClass> -->
-						</manifest>
+                        </manifest>
 					</archive>
 				</configuration>
 			</plugin>
+            <!--
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
@@ -142,6 +142,7 @@
 					<configLocation>../ats-tools/ats_checkstyle.xml</configLocation>
 				</configuration>
 			</plugin>
+			-->
 		</plugins>
 	</build>
 
@@ -153,47 +154,5 @@
 	</scm>
     -->
 
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>2.1.1</version>
-			</plugin>
-
-			<!--<plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-changelog-plugin</artifactId> 
-				<version>2.2</version> </plugin> -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.9.1</version>
-				<configuration>
-					<configLocation>../ats-tools/ats_checkstyle.xml</configLocation>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.8.1</version>
-				<configuration>
-					<configuration>
-						<show>private</show>
-						<nohelp>true</nohelp>
-					</configuration>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jxr-plugin</artifactId>
-				<version>2.3</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<version>2.7.1</version>
-			</plugin>
-
-		</plugins>
-	</reporting>
 
 </project>
