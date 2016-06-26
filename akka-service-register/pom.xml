@@ -1,0 +1,160 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.alto</groupId>
+	<artifactId>akka-service-register</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>akka-service-register</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	 	<slf4j.version>1.7.5</slf4j.version>
+	 	<logback.version>1.0.1</logback.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-library</artifactId>
+			<version>2.11.8</version>
+		</dependency>
+        <!--akka http libraries -->
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-http-core_2.11</artifactId>
+            <version>2.4.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-http-experimental_2.11</artifactId>
+            <version>2.4.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-http-spray-json-experimental_2.11</artifactId>
+            <version>2.4.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-x-discovery</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+        <dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+		  <groupId>ch.qos.logback</groupId>
+		  <artifactId>logback-classic</artifactId>
+		  <version>${logback.version}</version>
+ 		</dependency>
+		<dependency>
+		  <groupId>ch.qos.logback</groupId>
+		  <artifactId>logback-core</artifactId>
+		  <version>${logback.version}</version>
+ 		</dependency>
+		<dependency>
+	        <groupId>org.slf4j</groupId>
+	        <artifactId>slf4j-log4j12</artifactId>
+	        <version>1.7.5</version>
+    	</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+	
+	<repositories>
+        <repository>
+          <id>repo.typesafe.com</id>
+          <name>repo.typesafe.com</name>
+          <url>http://repo.typesafe.com/typesafe/releases/</url>
+        </repository>
+        <repository>
+            <id>thenewmotion</id>
+            <name>The New Motion Repository</name>
+            <url>http://nexus.thenewmotion.com/content/repositories/releases-public</url>
+        </repository>
+        <repository>
+            <id>repo.bintray.com</id>
+            <name>repo.bintray.com</name>
+            <url>http://dl.bintray.com/scalaz/releases</url>
+        </repository>
+  </repositories>
+
+	<build>
+		
+    	<testSourceDirectory>src/test/scala</testSourceDirectory>
+    	<sourceDirectory>src/main/scala</sourceDirectory>
+    	<resources>
+     		<resource>
+       			<directory>src/main/resources</directory>
+     		</resource>
+   		</resources>
+   		<testResources>
+     		<testResource>
+       			<directory>src/test/resources</directory>
+     		</testResource>
+     	</testResources>
+		<plugins>
+			<plugin>
+		        <groupId>org.scala-tools</groupId>
+		        <artifactId>maven-scala-plugin</artifactId>
+		        <version>2.15.2</version>
+		     <executions>
+		          <execution>
+		            <goals>
+		              <goal>compile</goal>
+		              <goal>testCompile</goal>
+		            </goals>
+		          </execution>
+		        </executions>
+      		</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+                        </manifest>
+					</archive>
+				</configuration>
+			</plugin>
+            <!--
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.9.1</version>
+				<configuration>
+					<configLocation>../ats-tools/ats_checkstyle.xml</configLocation>
+				</configuration>
+			</plugin>
+			-->
+		</plugins>
+	</build>
+
+    <!--
+	<scm>
+		<connection>scm:git:https://benjwheeler@github.com/benjwheeler/alphatradingsignals.git</connection>
+		<developerConnection>scm:git:https://benjwheeler@github.com/benjwheeler/alphatradingsignals.git</developerConnection>
+		<url>scm:git:https://benjwheeler@github.com/benjwheeler/alphatradingsignals.git</url>
+	</scm>
+    -->
+
+
+</project>
