@@ -3,42 +3,42 @@ package com.alto.app
 import javax.imageio.spi.ServiceRegistry
 
 import com.alto.service.ServiceRegister
+import org.apache.curator.x.discovery.ServiceDiscoveryBuilder
 
 /**
  * Created by drcee on 25/06/2016.
  */
 object ServiceRegisterSpike extends App {
 
+  new ServiceRegister().registerInZookeeper("exampleGGG",8082)
 
-  new ServiceRegister().registerInZookeeper()
+}
 
-  /*
-   val service = new ServiceRegister().serviceInstance("service/xxx","testService")
+object ClientConnector extends App {
 
-    service.buildUriSpec()
+  val client = new ServiceRegister().curator()
+  client.start()
 
-    println("starting ...")
-    val discover = new ServiceRegister().serviceDiscover(service)
+  val discovery = ServiceDiscoveryBuilder
+    .builder(classOf[String])
+    .basePath("services")
+    .client(client)
+    .build()
 
-    println("starting discovery...")
+    discovery.start()
 
-    discover.start()
-    */
+  val provider = discovery.serviceProviderBuilder().serviceName("exampleGGG").build()
 
-  /*
-   println("starting discovery completed...")
+  provider.start()
 
-    val provider = discover.serviceProviderBuilder()
-      .serviceName("service/yyyy")
-      .build()
+  var instances = provider.getAllInstances
 
+  var instance = provider.getInstance()
 
-    println("starting provider...")
-    provider.start()
+  var address = instance.buildUriSpec()
 
+  val response = scala.io.Source.fromURL(address + "/exampleGGG").mkString
 
-    println("attempting to register service...")
-    discover.registerService(service)
-  */
+  println("response " + response)
 
 }

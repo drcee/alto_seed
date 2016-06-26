@@ -2,7 +2,9 @@ package com.alto.service
 
 import org.apache.curator.framework.{CuratorFrameworkFactory, CuratorFramework}
 import org.apache.curator.retry.ExponentialBackoffRetry
+import org.apache.curator.x.discovery.details.JsonInstanceSerializer
 import org.apache.curator.x.discovery.{UriSpec, ServiceDiscoveryBuilder, ServiceInstance, ServiceDiscovery}
+import org.apache.zookeeper.CreateMode
 import org.slf4j.LoggerFactory
 
 
@@ -35,31 +37,37 @@ class ServiceRegister {
 
 
   def serviceInstance(serviceName: String,
-                      id: String
-                      //payload: String
+                      port: Int
                        )
-      : ServiceInstance[RestServiceMetaInfo] = {
+      : ServiceInstance[String] = {
 
     ServiceInstance.builder()
       .address("localhost")
       .name(serviceName)
       .uriSpec(new UriSpec("{scheme}://{address}:{port}"))
-      .port(3888)
+      .port(port)
       .build()
   }
 
-  def registerInZookeeper(): Unit = {
+  def registerInZookeeper(serviceName: String,
+                          port: Int): Unit = {
 
     log.info("attempting to start curator .. ")
-    curator().start()
 
-    val service = new ServiceRegister().serviceInstance("service/xxx","testService")
+    val client = curator()
+    client.start()
+    client.blockUntilConnected()
+
+    val serial = new JsonInstanceSerializer(classOf[String])
+
+    val service = new ServiceRegister().serviceInstance(serviceName,port)
 
     log.info("creating service discovery .. ")
     ServiceDiscoveryBuilder
-      .builder(classOf[RestServiceMetaInfo])
+      .builder(classOf[String])
       .basePath("services")
-      .client(curator())
+      .client(client)
+     // .serializer(serial)
       .thisInstance(service)
       .build()
       .start()
