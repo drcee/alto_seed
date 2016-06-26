@@ -1,19 +1,16 @@
 package com.alto.service
 
-import org.apache.curator.framework.{CuratorFrameworkFactory, CuratorFramework}
+import com.alto.Logging
+import org.apache.curator.framework.{CuratorFramework, CuratorFrameworkFactory}
 import org.apache.curator.retry.ExponentialBackoffRetry
 import org.apache.curator.x.discovery.details.JsonInstanceSerializer
-import org.apache.curator.x.discovery.{UriSpec, ServiceDiscoveryBuilder, ServiceInstance, ServiceDiscovery}
-import org.apache.zookeeper.CreateMode
-import org.slf4j.LoggerFactory
+import org.apache.curator.x.discovery.{ServiceDiscoveryBuilder, ServiceInstance, UriSpec}
 
 
 /**
  * Created by drcee on 22/06/2016.
  */
-class ServiceRegister {
-
-  val log = LoggerFactory.getLogger(classOf[ServiceRegister])
+object ServiceRegister extends Logging{
 
   val ZK_HOST = "localhost:2181"
 
@@ -21,21 +18,20 @@ class ServiceRegister {
       CuratorFrameworkFactory.newClient(ZK_HOST, new ExponentialBackoffRetry(1000,3))
   }
 
-  def serviceInstance(serviceName: String,
+  def serviceInstance(serviceInfo: ServiceMetaInfo,
                       port: Int
                        )
       : ServiceInstance[String] = {
 
     ServiceInstance.builder()
       .address("localhost")
-      .name(serviceName)
-      .uriSpec(new UriSpec("{scheme}://{address}:{port}/" + serviceName))
+      .name(serviceInfo.serviceName)
+      .uriSpec(new UriSpec("{scheme}://{address}:{port}/" + serviceInfo.path))
       .port(port)
       .build()
   }
 
-  def registerInZookeeper(serviceName: String,
-                          port: Int): Unit = {
+  def registerInZookeeper(serviceInfo: ServiceMetaInfo, port: Int): Unit = {
 
     log.info("attempting to start curator .. ")
 
@@ -45,7 +41,11 @@ class ServiceRegister {
 
     val serial = new JsonInstanceSerializer(classOf[String])
 
-    val service = serviceInstance(serviceName,port)
+    log.info("attempting create service {}",serviceInfo)
+
+    val service = serviceInstance(
+      serviceInfo,
+        port)
 
     log.info("creating service discovery .. ")
     ServiceDiscoveryBuilder
@@ -58,7 +58,8 @@ class ServiceRegister {
       .start()
   }
 
-  def serviceDiscover(service: ServiceInstance[RestServiceMetaInfo]): ServiceDiscovery[RestServiceMetaInfo] = {
+  /*
+  def serviceDiscover(service: ServiceInstance[ServiceMetaInfo]): ServiceDiscovery[ServiceMetaInfo] = {
 
     log.info("attempting to start curator .. ")
     curator().start()
@@ -71,4 +72,5 @@ class ServiceRegister {
       .thisInstance(service)
       .build()
   }
+  */
 }

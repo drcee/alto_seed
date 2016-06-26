@@ -1,0 +1,25 @@
+package com.alto.service
+
+/**
+ * Created by drcee on 25/06/2016.
+ */
+class ServiceMetaInfo(val serviceName: String,
+                          val path: String,
+                          val port: Int,
+                          val version: Long) {
+
+}
+
+object ServiceMetaInfo {
+  def apply(serviceName: String,
+            path: String,
+            port : Int,
+            version :Long) = { new ServiceMetaInfo(serviceName,path,port,version)
+  }
+
+  def apply(serviceName: String,
+            path: String,
+            port: Int):ServiceMetaInfo = { apply(serviceName,path,port,1L)
+
+  }
+}

@@ -1,18 +1,21 @@
 package com.alto.app
 
-import com.alto.service.ServiceRegister
+import com.alto.service.{ServiceMetaInfo, ServiceRegister}
 import org.apache.curator.x.discovery.ServiceDiscoveryBuilder
 
 /**
  * Created by drcee on 25/06/2016.
  */
 object RegisterService extends App {
-  new ServiceRegister().registerInZookeeper("exampleGGG",8082)
+
+  val serviceInfo = ServiceMetaInfo("exampleService","exampleGGG",8082)
+
+  ServiceRegister.registerInZookeeper(serviceInfo,8082)
 }
 
 object ClientConnector extends App {
 
-  val client = new ServiceRegister().curator()
+  val client = ServiceRegister.curator()
   client.start()
 
   val discovery = ServiceDiscoveryBuilder
@@ -23,7 +26,7 @@ object ClientConnector extends App {
 
   discovery.start()
 
-  val provider = discovery.serviceProviderBuilder().serviceName("work").build()
+  val provider = discovery.serviceProviderBuilder().serviceName("exampleService").build()
 
   provider.start()
 
