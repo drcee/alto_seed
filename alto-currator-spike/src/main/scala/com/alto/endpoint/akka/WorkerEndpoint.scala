@@ -2,6 +2,7 @@ package com.alto.endpoint.akka
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
 
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.RouteResult.route2HandlerFlow
@@ -26,7 +27,7 @@ object WorkerEndpoint extends App with SprayJsonSupport with Logging {
   val config = ConfigFactory.load()
   val port = config.getInt("port")
 
-  //val registerMe = new ServiceRegister().registerInZookeeper("work",port)
+  val registerMe = new ServiceRegister().registerInZookeeper("work",port)
   implicit val system = ActorSystem.create()
 
   implicit val executionContext = system.dispatcher
@@ -36,7 +37,7 @@ object WorkerEndpoint extends App with SprayJsonSupport with Logging {
     get {
       path("work") {
         log.info("serviced by endpoint running on port {}", port)
-        complete(List(1, 2, 3))
+        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http running on port" + port + " </h1>"))
       } ~
       path(Segment) { string =>
         complete(PrettyPrinter(string.toJson))

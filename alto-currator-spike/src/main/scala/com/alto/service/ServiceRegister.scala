@@ -21,21 +21,6 @@ class ServiceRegister {
       CuratorFrameworkFactory.newClient(ZK_HOST, new ExponentialBackoffRetry(1000,3))
   }
 
-  def serviceDiscover(service: ServiceInstance[RestServiceMetaInfo]): ServiceDiscovery[RestServiceMetaInfo] = {
-
-    log.info("attempting to start curator .. ")
-    curator().start()
-
-    log.info("creating service discovery .. ")
-    ServiceDiscoveryBuilder
-      .builder(classOf[RestServiceMetaInfo])
-      .basePath("services")
-      .client(curator())
-      .thisInstance(service)
-      .build()
-  }
-
-
   def serviceInstance(serviceName: String,
                       port: Int
                        )
@@ -44,7 +29,7 @@ class ServiceRegister {
     ServiceInstance.builder()
       .address("localhost")
       .name(serviceName)
-      .uriSpec(new UriSpec("{scheme}://{address}:{port}"))
+      .uriSpec(new UriSpec("{scheme}://{address}:{port}/work"))
       .port(port)
       .build()
   }
@@ -60,7 +45,7 @@ class ServiceRegister {
 
     val serial = new JsonInstanceSerializer(classOf[String])
 
-    val service = new ServiceRegister().serviceInstance(serviceName,port)
+    val service = serviceInstance(serviceName,port)
 
     log.info("creating service discovery .. ")
     ServiceDiscoveryBuilder
@@ -71,7 +56,19 @@ class ServiceRegister {
       .thisInstance(service)
       .build()
       .start()
-
   }
 
+  def serviceDiscover(service: ServiceInstance[RestServiceMetaInfo]): ServiceDiscovery[RestServiceMetaInfo] = {
+
+    log.info("attempting to start curator .. ")
+    curator().start()
+
+    log.info("creating service discovery .. ")
+    ServiceDiscoveryBuilder
+      .builder(classOf[RestServiceMetaInfo])
+      .basePath("services")
+      .client(curator())
+      .thisInstance(service)
+      .build()
+  }
 }

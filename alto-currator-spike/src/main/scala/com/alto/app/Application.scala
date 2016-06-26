@@ -25,20 +25,29 @@ object ClientConnector extends App {
     .client(client)
     .build()
 
-    discovery.start()
+  discovery.start()
 
-  val provider = discovery.serviceProviderBuilder().serviceName("exampleGGG").build()
+  val provider = discovery.serviceProviderBuilder().serviceName("work").build()
 
   provider.start()
 
-  var instances = provider.getAllInstances
+  invokeInstance
+  invokeInstance()
+  invokeInstance()
+  invokeInstance()
+  invokeInstance()
+  invokeInstance()
+  invokeInstance()
+  invokeInstance()
 
-  var instance = provider.getInstance()
 
-  var address = instance.buildUriSpec()
+  def invokeInstance(): Unit = {
+    var instance = provider.getInstance()
 
-  val response = scala.io.Source.fromURL(address + "/exampleGGG").mkString
+    var address = instance.buildUriSpec()
 
-  println("response " + response)
+    val response = scala.io.Source.fromURL(address + "/work").mkString
 
+    println("response " + response  + " from address " + address)
+  }
 }
