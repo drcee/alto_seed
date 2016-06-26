@@ -1,17 +1,13 @@
 package com.alto.app
 
-import javax.imageio.spi.ServiceRegistry
-
 import com.alto.service.ServiceRegister
 import org.apache.curator.x.discovery.ServiceDiscoveryBuilder
 
 /**
  * Created by drcee on 25/06/2016.
  */
-object ServiceRegisterSpike extends App {
-
+object RegisterService extends App {
   new ServiceRegister().registerInZookeeper("exampleGGG",8082)
-
 }
 
 object ClientConnector extends App {
@@ -46,7 +42,7 @@ object ClientConnector extends App {
 
     var address = instance.buildUriSpec()
 
-    val response = scala.io.Source.fromURL(address + "/work").mkString
+    val response = scala.io.Source.fromURL(address).mkString
 
     println("response " + response  + " from address " + address)
   }

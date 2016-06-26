@@ -29,7 +29,7 @@ class ServiceRegister {
     ServiceInstance.builder()
       .address("localhost")
       .name(serviceName)
-      .uriSpec(new UriSpec("{scheme}://{address}:{port}/work"))
+      .uriSpec(new UriSpec("{scheme}://{address}:{port}/" + serviceName))
       .port(port)
       .build()
   }
