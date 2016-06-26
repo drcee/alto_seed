@@ -13,9 +13,7 @@ import com.typesafe.config.ConfigFactory
 import spray.json.DefaultJsonProtocol._
 import spray.json._
 
-/**
- * Created by drcee on 26/06/2016.
- */
+
 object WorkerEndpoint extends App
 with SprayJsonSupport
 with RegisterableEndPoint
@@ -32,7 +30,7 @@ with Logging {
     get {
       path("work") {
         log.info("serviced by endpoint running on port {}", port)
-        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http running on port" + port + " </h1>"))
+        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http running on port " + port + " </h1>"))
       } ~
       path(Segment) { string =>
         complete(PrettyPrinter(string.toJson))
