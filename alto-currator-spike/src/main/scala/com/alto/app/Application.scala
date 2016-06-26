@@ -13,7 +13,7 @@ object RegisterService extends App {
   ServiceRegister.registerInZookeeper(serviceInfo,8082)
 }
 
-object ClientConnector extends App {
+object ClientConnectorTester extends App {
 
   val client = ServiceRegister.curator()
   client.start()
